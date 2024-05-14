@@ -97,11 +97,14 @@ ggplot(data = mpg) +
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy), color = "blue")
 ```
-
+#This plot would need something to show car class
 
 # Troubleshooting 
-
-
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy), color = displ < 5)
+```
+#Cannot map an aesthetic that is something other than variable name
 
 
 
@@ -125,7 +128,7 @@ ggplot(data = mpg) +
   facet_grid(drv ~ cyl)
 ```
 Note that there are no occurrences of 5 cylinder 4WDs OR RWD vehicles!
-
+#facet_grid(column ~ row)
 
 ## facet_grid by just row (or column)
 ```{r}
@@ -139,6 +142,12 @@ ggplot(data = mpg) +
 # Exercise:
 Read ?facet_wrap. What does nrow do? What does ncol do? What other options control the layout of the individual panels? 
 
+#nrow and ncol specify the number of rows and columns
+#shrink alters scales to fit the output of statistics, not row data
+#switch changes the display of labels. Default is top and right, if "x" top labels are displayed on the bottom and if "y" right-hand labels are displayed on the left
+#as.table: True = facets are laid out like a table with highest values at the bottom right, if False = highest values at top right
+#dir = direction, 'h' for horizontal and 'v' for verticle
+#strip.position = c("top", "bottom", "left", "right") changes the label display position
 ```{r}
 
 ```
@@ -148,7 +157,7 @@ Read ?facet_wrap. What does nrow do? What does ncol do? What other options contr
 We already used points:
 ```{r}
 ggplot(data = mpg) + 
-  geom_point(mapping = aes(x = displx, y = hwy))
+  geom_point(mapping = aes(x = displ, y = hwy))
 ```
 
 
@@ -167,16 +176,20 @@ So let’s recap. A geom is an object that your plot uses to represent the data.
 ## Using comments (#)
 ```{r}
 ggplot(data = mpg) + 
-  #geom_point(mapping = aes(x = displ, y = hwy)) + # points horrible 
-  geom_smooth(mappings = aes(x = displ, y = hwy)) # try smooth line
+  geom_point(mapping = aes(x = displ, y = hwy)) + # points horrible 
+  geom_smooth(mapping = aes(x = displ, y = hwy)) # try smooth line
 ```
 
 Question: how does R work out where to plot the line??? Can use the chunk output to inform us. Can also use the help menu.
+#R applies a formula: <1000 observations, y ~ s(x, bs = "cs"). #Else: y ~ x, y ~ poly(x,2),y ~ log(x)
+#If method = 'Null' formula = y ~ x
 
 # Changing linetype
 ```{r}
 ggplot(data = mpg) + 
-  geom_smooth(mapping = aes(x = displ, y = hwy, linetype = drv)) # Can also use "lty = " for the same result
+  geom_point(mapping = aes(x = displ, y = hwy, color = drv)) +
+  geom_smooth(mapping = aes(x = displ, y = hwy, linetype = drv, color = drv),
+show.legend = TRUE) # Can also use "lty = " for the same result
 ```
 
 
@@ -191,7 +204,7 @@ ggplot(data = mpg) +
 ggplot(data = mpg) +
   geom_smooth(
     mapping = aes(x = displ, y = hwy, color = drv),
-    show.legend = FALSE,
+    show.legend = TRUE,
   )
 ```
 
@@ -199,7 +212,7 @@ ggplot(data = mpg) +
 We already did this one way
 ```{r}
 ggplot(data = mpg) + 
-  geom_point(mapping = aes(xx = displ, y = hwy)) +
+  geom_point(mapping = aes(x = displ, y = hwy)) +
   geom_smooth(mapping = aes(x = displ, y = hwy))
 ```
 
@@ -227,10 +240,12 @@ ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
   geom_smooth(data = filter(mpg, class == "subcompact"), se = FALSE)
 ```
 Question: what does the "se = FALSE" do?
-
+#se refers to the confidence interval/standard error. Setting this to false removes these frm the line
+#Using ata filter for geom_smooth plots a line for only the selected data class, while hvaing geom_point displaying all classes
 
 # Exercise:
 1.  What geom would you use to draw a line chart? A boxplot? A histogram? An area chart?
+#geom_line = line chart, geom_boxplot = boxplot, geom_area = area chart
 2.  Run this code in your head and predict what the output will look like. Then, run the code in R and check your predictions.
 
 ```{r}
@@ -239,6 +254,7 @@ Question: what does the "se = FALSE" do?
 
 
 3.  Will these two graphs look different? Why/why not?
+#These graphs will not look different because the top lines are a shorthand way of writing the bottom lines. Since nothing is specified under mappings, it would be the same as efault, which is geom_????()
 ```{r}
 ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
   geom_point() + 
