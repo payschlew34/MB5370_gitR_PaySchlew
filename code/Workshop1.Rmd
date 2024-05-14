@@ -300,6 +300,7 @@ ggplot(data = demo) +
   geom_bar(mapping = aes(x = cut, y = freq), stat = "identity")
 ```
 Question: Why did we specify now specify a y axis?
+#Because the X axis does not contain any values and we want to make sure that 'cut' is displayed on the X axis.
 
 # What if we want to know the proportion rather than the absolute frequency?
 ```{r}
@@ -333,6 +334,8 @@ ggplot(data = diamonds) +
   geom_bar(mapping = aes(x = cut, fill = cut))
 ```
 Question: Does anyone notice anything different in the colour scheme of this plot?
+#The colors vary in their vividity? ONe color scheme (viridis) uses darker colors while the latter has all lighter colors
+
 (Hint: It's in the viridis colour palette (colour blind friendly), but why is it different from the colour palette we used earlier?)
 Check out the difference:
 ```{r}
