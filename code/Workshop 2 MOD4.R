@@ -84,8 +84,89 @@ base + theme(legend.position = "none") #removes the legend
 #Load dataset
 data("diamonds")
 glimpse(diamonds)
-
+#some relationships are easier to see when the scale is transformed i.e. carat with price
 ggplot(diamonds, aes(carat, price)) +
   geom_bin2d() + 
   scale_x_log10() + 
   scale_y_log10()
+
+#Changing color scales
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point(aes(color = drv))
+
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point(aes(color = drv)) +
+  scale_colour_brewer(palette = "Set1")
+#In case there are few colors, shapes can be used in conjunction to ensure correct interpretation even in black and white
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point(aes(color = drv, shape = drv)) +
+  scale_colour_brewer(palette = "Set1")
+#ColorBrewer scales can be found at http://colorbrewer2.org/
+#More on colors can be found in the ggplot2 cookbook: http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
+
+#Predefined colors can be set using scale_color_manual()
+presidential %>%
+  mutate(id = 33 + row_number()) %>%
+  ggplot(aes(start, id, colour = party)) +
+  geom_point() +
+  geom_segment(aes(xend = end, yend = id)) +
+  scale_colour_manual(values = c(Republican = "red", Democratic = "blue"))
+#A commonly used color scheme is the viridis color scheme, used with scale_color_viridis()
+#install.packages('viridis') #Only need to run once
+#install.packages('hexbin') #Only need to run once
+library(viridis)
+library(hexbin)
+
+df <- tibble( # note we're just making a fake dataset so we can plot it
+  x = rnorm(10000),
+  y = rnorm(10000)
+)
+ggplot(df, aes(x, y)) +
+  geom_hex() + #generates a hex plot. creates hexagonal points that form a mosaic
+  coord_fixed()
+
+ggplot(df, aes(x, y)) +
+  geom_hex() +
+  viridis::scale_fill_viridis() +
+  coord_fixed()
+#Other color palettes like the Wes Anderson palette are also used frequently
+
+#3.7 Themes
+#ggplot2 has 8 themes by default that alter the entire theme of the plot
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point(aes(color = class)) +
+  geom_smooth(se = FALSE) +
+  theme_bw()
+
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point(aes(color = class)) +
+  geom_smooth(se = FALSE) +
+  theme_light()
+
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point(aes(color = class)) +
+  geom_smooth(se = FALSE) +
+  theme_classic()
+
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point(aes(color = class)) +
+  geom_smooth(se = FALSE) +
+  theme_dark()
+
+#You can create your own theme as well using theme(). For example:
+theme (panel.border = element_blank(),
+       panel.grid.minor.x = element_blank(),
+       panel.grid.minor.y = element_blank(),
+       legend.position="bottom",
+       legend.title=element_blank(),
+       legend.text=element_text(size=8),
+       panel.grid.major = element_blank(),
+       legend.key = element_blank(),
+       legend.background = element_blank(),
+       axis.text.y=element_text(colour="black"),
+       axis.text.x=element_text(colour="black"),
+       text=element_text(family="Arial")) 
+
+#3.8 Saving and exporting your plots
+#You can save ggplots using ggsave("name_of_plot.pdf") and this will save it to your working directory
+#The size of the saved plot can be altered using the 'height' and 'width' functions
