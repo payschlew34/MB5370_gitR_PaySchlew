@@ -14,10 +14,14 @@ knitr::opts_chunk$set(echo = TRUE)
 #install.packages("usethis")  #Only run once
 library("tidyverse")
 library("usethis")
+```
+
+```{r}
 use_git_config(user.name = "payschlew34", user.email = "pschlewitt@gmail.com")
 #if on a new device, generate a new personal access token
 gitcreds::gitcreds_set()
 ```
+
 #Data sourced from the State of Queensland, Department of Agriculture, Fisheries
 
 #Allow R to access our csv file
