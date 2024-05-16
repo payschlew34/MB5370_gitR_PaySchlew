@@ -74,6 +74,21 @@ ggplot(table1, aes(year, cases)) +
 
 
 #4.4.1 Exercises
+#For each of the sample tables, describe what each observation and each column represents.
+#Sketch out the processes you would use to calculate the rate for table2 and table3. You will need to perform four operations:
+#1. Extract the number of TB cases per country per year
+#2. Extract the matching population per country per year
+#3. Divide cases by population, and multiply by 10,000
+#4. Store back in the appropriate place
+
+#I dont understand why this question is asking how to find rate for table 2 since table 2 has a column for rate.
+
 #Table 1 has columns set up for country, year, cases and population
-#Table 2 has columns set up for country year, type (pop or cases) and count
-#Table 3 has columns set up for 
+#Table 2 has columns set up for country, year, type (pop or cases) and count
+#Table 3 has columns set up for country, year, and rate
+
+
+#4.5 Pivoting data to make it tidy
+#Using tidyr, we access two functions: pivot_longer() to lengthen data and pivot_wider() to widen data
+
+#4.5.1 Lengthening datasets
