@@ -12,7 +12,10 @@ library("tidyverse")
 library("usethis")
 
 #Example tables
+```{r}
 table1
+```
+#output:
 #> # A tibble: 6 × 4
 #>   country      year  cases population
 #>   <chr>       <int>  <int>      <int>
@@ -22,7 +25,9 @@ table1
 #> 4 Brazil       2000  80488  174504898
 #> 5 China        1999 212258 1272915272
 #> 6 China        2000 213766 1280428583
+```{r}
 table2
+```
 #> # A tibble: 12 × 4
 #>   country      year type           count
 #>   <chr>       <int> <chr>          <int>
@@ -33,7 +38,9 @@ table2
 #> 5 Brazil       1999 cases          37737
 #> 6 Brazil       1999 population 172006362
 #> # ... with 6 more rows
+```{r}
 table3
+```
 #> # A tibble: 6 × 3
 #>   country      year rate             
 #> * <chr>       <int> <chr>            
@@ -46,8 +53,10 @@ table3
 
 #Example tables 2
 # Compute rate per 10,000
+```{r}
 table1 %>% 
   mutate(rate = cases / population * 10000)
+```
 #> # A tibble: 6 × 5
 #>   country      year  cases population  rate
 #>   <chr>       <int>  <int>      <int> <dbl>
@@ -59,8 +68,10 @@ table1 %>%
 #> 6 China        2000 213766 1280428583 1.67
 
 # Compute cases per year
+```{r}
 table1 %>% 
   count(year, wt = cases)
+```
 #> # A tibble: 2 × 2
 #>    year      n
 #>   <int>  <int>
@@ -68,11 +79,12 @@ table1 %>%
 #> 2  2000 296920
 
 # Visualise changes over time
+```{r}
 library(ggplot2)
 ggplot(table1, aes(year, cases)) + 
   geom_line(aes(group = country), colour = "grey50") + 
   geom_point(aes(colour = country))
-
+```
 
 
 #4.4.1 Exercises
@@ -94,7 +106,9 @@ ggplot(table1, aes(year, cases)) +
 #Using tidyr, we access two functions: pivot_longer() to lengthen data and pivot_wider() to widen data
 
 #4.5.1 Lengthening datasets
+```{r}
 billboard
+```
 #> # A tibble: 317 × 79
 #>   artist       track               date.entered   wk1   wk2   wk3   wk4   wk5
 #>   <chr>        <chr>               <date>       <dbl> <dbl> <dbl> <dbl> <dbl>
@@ -108,12 +122,14 @@ billboard
 #> # ℹ 71 more variables: wk6 <dbl>, wk7 <dbl>, wk8 <dbl>, wk9 <dbl>, ...
 
 #By sing pivot_longer(), we can tidy this table up by creating columns for week instead of rows
+```{r}
 billboard |> 
   pivot_longer(
     cols = starts_with("wk"), 
     names_to = "week", 
     values_to = "rank"
   )
+``` 
 #> # A tibble: 24,092 × 5
 #>    artist track                   date.entered week   rank
 #>    <chr>  <chr>                   <date>       <chr> <dbl>
@@ -130,6 +146,7 @@ billboard |>
 #values_to names the variable stored in the cells associated with week
 #"week" and "rank" are in quotes because they are new variables nt defined when first running pivot_longer()
 #performing pivot_longer() may create NA data values, but these can be eaasily removed by adding values_drop_na = TRUE
+```{r}
 billboard |> 
   pivot_longer(
     cols = starts_with("wk"), 
@@ -137,6 +154,7 @@ billboard |>
     values_to = "rank",
     values_drop_na = TRUE
   )
+```
 #> # A tibble: 5,307 × 5
 #>   artist track                   date.entered week   rank
 #>   <chr>  <chr>                   <date>       <chr> <dbl>
@@ -150,20 +168,24 @@ billboard |>
 #NOTE: The total number of rows is now significantly reduced
 
 #4.5.2 Pivoting longer
+```{r}
 df <- tribble(
   ~id,  ~bp1, ~bp2,
    "A",  100,  120,
    "B",  140,  115,
    "C",  120,  125
 )
+```
 #We want the new dataset to have three variables:ID, measurement(column names), and value (the cell values)
 #To do this, df needs to be pivoted longer
+```{r}
 df |> 
   pivot_longer(
     cols = bp1:bp2,
     names_to = "measurement",
     values_to = "value"
   )
+```
 #Output:
 #> # A tibble: 6 × 3
 #>   id    measurement value
@@ -178,7 +200,9 @@ df |>
 #4.5.3 Widening datasets
 #Using pivot_wider() we can condense observations scattered across multiple rows
 #We are using a dataset from the Centers of Medicare and Medicaid
+```{r}
 cms_patient_experience
+```
 #Output:
 #> # A tibble: 500 × 5
 #>   org_pac_id org_nm                     measure_cd   measure_title   prf_rate
@@ -193,11 +217,13 @@ cms_patient_experience
 
 #Although the current columns would not make the best variable names, but for the sake of the exercise we are using 
 #ulke pivot_longer(), pivot_wider() needs to be provided existing columns that define the vales and the column name
+```{r}
 cms_patient_experience |> 
   pivot_wider(
     names_from = measure_cd,
     values_from = prf_rate
   )
+```
 #Output:
 #> # A tibble: 500 × 9
 #>   org_pac_id org_nm                   measure_title   CAHPS_GRP_1 CAHPS_GRP_2
@@ -212,12 +238,14 @@ cms_patient_experience |>
 #> # ℹ 4 more variables: CAHPS_GRP_3 <dbl>, CAHPS_GRP_5 <dbl>, ...
 
 #To further refine this we need to specify which column or columns have values that uniquely identify each row, in this case they are the variables that start with "org"
+```{r}
 cms_patient_experience |> 
   pivot_wider(
     id_cols = starts_with("org"),
     names_from = measure_cd,
     values_from = prf_rate
   )
+```
 #Output:
 #> # A tibble: 95 × 8
 #>   org_pac_id org_nm           CAHPS_GRP_1 CAHPS_GRP_2 CAHPS_GRP_3 CAHPS_GRP_5
@@ -233,7 +261,8 @@ cms_patient_experience |>
 #Now everything is sorted by medical providers, much cleaner and easier to read
 
 #4.5.4 Pivoting wider
-df<- tribble(
+```{r}
+df2 <- tribble(
   ~id, ~measurement, ~value,
   "A",        "bp1",    100,
   "B",        "bp1",    140,
@@ -241,4 +270,102 @@ df<- tribble(
   "A",        "bp2",    120,
   "A",        "bp3",    105
 )
+```
+#We want to take the names from the measurements column using names_from() and the values from the value column using values_from()
+```{r}
+df |> 
+  pivot_wider(
+    names_from = measurement,
+    values_from = value
+  )
+```
+#Output:
+#> # A tibble: 2 × 4
+#>   id      bp1   bp2   bp3
+#>   <chr> <dbl> <dbl> <dbl>
+#> 1 A       100   120   105
+#> 2 B       140   115    NA
 
+#4.5.5 Exercises
+#Why are pivot_longer() and pivot_wider() not perfectly symmetrical? Carefully consider the following example. 
+stocks <- tibble(
+  year   = c(2015, 2015, 2016, 2016),
+  half  = c(   1,    2,     1,    2),
+  return = c(1.88, 0.59, 0.92, 0.17)
+)
+stocks %>% 
+  pivot_wider(names_from = year, values_from = return) %>% 
+  pivot_longer(`2015`:`2016`, names_to = "year", values_to = "return")
+
+#These tables are not symmetrical because pivot_wider() is turning the years into rows and then assigning values, while pivot_longer() is turning the years into columns and then assigning values
+
+#Why does this code fail?
+```{r}
+table4a %>% 
+  pivot_longer(c(1999, 2000), names_to = "year", values_to = "cases")
+```
+#> Error in `pivot_longer()`:
+#> ! Can't subset columns past the end.
+#> ℹ Locations 1999 and 2000 don't exist.
+#> ℹ There are only 3 columns.
+
+
+#Consider the sample tibble below. Do you need to make it wider or longer? What are the variables?
+preg <- tribble(
+  ~pregnant, ~male, ~female,
+  "yes",     NA,    10,
+  "no",      20,    12
+)
+#Make it wider. The variables are Gender and Pregnant, and the values are the count of each gender
+
+#4.5.6 Separating and uniting data tables
+#Using table 3 from earlier in the script, we want to separate the "rate" column into "cases" and "population" using searate()
+```{r}
+table3 %>% 
+  separate(rate, into = c("cases", "population"))
+```
+#Output:
+#> # A tibble: 6 × 4
+#>   country      year cases  population
+#>   <chr>       <int> <chr>  <chr>     
+#> 1 Afghanistan  1999 745    19987071  
+#> 2 Afghanistan  2000 2666   20595360  
+#> 3 Brazil       1999 37737  172006362 
+#> 4 Brazil       2000 80488  174504898 
+#> 5 China        1999 212258 1272915272
+#> 6 China        2000 213766 1280428583
+#Because the default for separate() turns our values into character (<chr>) types, we want those values to be numerical
+#This is one by using convert = TRUE
+```{r}
+table3 %>% 
+  separate(rate, into = c("cases", "population"), convert = TRUE)
+```
+#Output:
+#> # A tibble: 6 × 4
+#>   country      year  cases population
+#>   <chr>       <int>  <int>      <int>
+#> 1 Afghanistan  1999    745   19987071
+#> 2 Afghanistan  2000   2666   20595360
+#> 3 Brazil       1999  37737  172006362
+#> 4 Brazil       2000  80488  174504898
+#> 5 China        1999 212258 1272915272
+#> 6 China        2000 213766 1280428583
+#unite() is the opposite tool to separate() and used to combine multiple columns into a single column
+#For example, unite() is used here to combine the "century" and "year" columns
+```{r}
+table5 %>% 
+  unite(new, century, year, sep = "") #sep = "" makes it so that there is no separation in the new combined column
+#unite(new column name, column 1 to combine, column 2 to combine, sep = "" for none or "value/character")
+```
+#Output:
+#> # A tibble: 6 × 3
+#>   country     new   rate             
+#>   <chr>       <chr> <chr>            
+#> 1 Afghanistan 1999  745/19987071     
+#> 2 Afghanistan 2000  2666/20595360    
+#> 3 Brazil      1999  37737/172006362  
+#> 4 Brazil      2000  80488/174504898  
+#> 5 China       1999  212258/1272915272
+#> 6 China       2000  213766/1280428583
+
+#4.6 Handling missing values
