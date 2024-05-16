@@ -1,0 +1,21 @@
+---
+title: "QFISH"
+author: "Payton Schlewitt"
+date: "2024-05-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#install.packages("tidyverse") #Only run once
+#install.packages("usethis")  #Only run once
+library("tidyverse")
+library("usethis")
+use_git_config(user.name = "payschlew34", user.email = "pschlewitt@gmail.com")
+#if on a new device, generate a new personal access token
+gitcreds::gitcreds_set()
+```
+
