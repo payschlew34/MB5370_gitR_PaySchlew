@@ -27,7 +27,7 @@ gitcreds::gitcreds_set()
 #Allow R to access our csv file
 ```{r}
 commercial_line <- read.csv("D:\\github.module\\MB5370_gitR_PaySchlew\\data\\QFISH_Commercial_Line.csv")
-#refining data set t exclude total values and 2024 because the data is still incomplete for that year
+#refining data set to exclude total values and 2024 because the data is still incomplete for that year
 comm_line_2023 <- commercial_line %>% filter(!row_number() %in% c(35, 36))
 ```
 #Creating a basic line plot with Tonnes vs Year
@@ -55,7 +55,7 @@ ggplot(data = comm_line_2023, mapping = aes(x = CalendarYear, y = Licences)) +
 #Days with catch reported (unsure of how this metric was calculated, source data not clear)
 ggplot(data = comm_line_2023, mapping = aes(x = CalendarYear, y = Days)) +
   geom_point() +
-  #geom_smoot() +
+  #geom_smooth() +
   geom_line(group = 1) +
   scale_x_discrete(breaks = seq(1990, 2023, by = 2)) +
   labs(x = "Year")
