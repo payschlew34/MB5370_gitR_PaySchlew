@@ -1,0 +1,55 @@
+---
+title: "Workshop 4"
+author: "Payton Schlewitt"
+date: "2024-05-17"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#install.packages("tidyverse") #Only run once
+#install.packages("usethis")  #Only run once
+library("tidyverse")
+library("usethis")
+```
+
+```{r}
+use_git_config(user.name = "payschlew34", user.email = "pschlewitt@gmail.com")
+#if on a new device, generate a new personal access token
+gitcreds::gitcreds_set()
+```
+
+```{r}
+library(readr)
+library(ggplot2)
+```
+
+Giving R access to our dataset
+```{r}
+data <- read_csv("data/data-for-course/copepods_raw.csv")
+```
+
+Spatial plotting for richness in relationship to coordinate position
+```{r}
+ggplot(data) +
+  aes(x = longitude, y = latitude, color = richness_raw) +
+  geom_point() +
+  scale_color_continuous(name = "Raw Richness") +
+  scale_y_continuous(name = "Lat. (°South)") +
+  scale_x_continuous(name = "Lon. (°East)") +
+  theme(legend.title = element_text("Raw Richness"))
+```
+Non-spatial plotting of richness against latitude
+Shows longitude's relationship with richness
+```{r}
+ggplot(data, aes(x = latitude, y = richness_raw)) + 
+  stat_smooth() + 
+  geom_point() +
+  scale_y_continuous(name = "Lat. (°South)") +
+  scale_x_continuous(name = "Lon. (°East)") 
+```
+
+
