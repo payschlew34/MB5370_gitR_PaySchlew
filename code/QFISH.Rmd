@@ -89,7 +89,8 @@ ggplot(data = comm_line_2023, mapping = aes(x = CalendarYear, y = Licences)) +
 ```
 
 ```{r}
-#Days with catch reported (unsure of how this metric was calculated, source data not clear)
+#Days with catch reported
+#Example: Two different fisherman go out and bring back fish on the same day. This is counted as 2 fishing days.
 ggplot(data = comm_line_2023, mapping = aes(x = CalendarYear, y = Days)) +
   geom_point() +
   geom_line(group = 1) +
