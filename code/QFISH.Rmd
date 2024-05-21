@@ -51,7 +51,8 @@ comm_line_2023 <-commercial_line |>
   mutate_if(is.character, as.double)
 head(comm_line_2023)
 ```
-
+This removes the rows for total weight exported and the values for the year 2024 since the year does not have a complete dataset yet.
+This also replaces the comma in values over 1,000 with no space so that Tonnes can be assigned as double instead of character.
 
 
 
