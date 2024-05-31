@@ -16,11 +16,11 @@ library("tidyverse")
 library("usethis")
 ```
 
-```{r}
+#This will vary from user to user depending on github credentials and should only be run when using a new device
 use_git_config(user.name = "payschlew34", user.email = "pschlewitt@gmail.com")
 #if on a new device, generate a new personal access token
 gitcreds::gitcreds_set()
-```
+
 
 #Data sourced from the State of Queensland, Department of Agriculture, Fisheries
 
